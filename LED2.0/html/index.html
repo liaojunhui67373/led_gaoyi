@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>开关</title>
+  <script src="../static/vue/vue.js"></script>
+  <script src="../static/axios/axios.min.js"></script>
+  <script src="../static/jquery/jquery-3.5.1.min.js"></script>
+</head>
+
+<body>
+  <p><input type="button" value="开启所有" style="width: 100px; height: 50px" id="openAllBtn" onclick="openAllLed()"></p>
+
+  <p><input type="button" value="关闭所有" style="width: 100px; height: 50px" id="closeAllBtn" onclick="closeAllLed()"></p>
+
+
+  <p>设备 1</p>                                                                                                                 
+  
+  <input type="button" value="开灯" style="width: 100px; height: 50px" id="openBtn34425" onclick="openLed('32425')">
+
+  <p><input type="button" value="关灯" style="width: 100px; height: 50px" id="closeBtn34425" onclick="closeLed('32425')"></p>
+
+  <p>设备 2</p>
+
+  <p><input type="button" value="开灯" style="width: 100px; height: 50px" id="openBtn34422" onclick="openLed('32422')"></p>
+
+  <p><input type="button" value="关灯" style="width: 100px; height: 50px" id="closeBtn34422" onclick="closeLed('32422')"></p>
+
+  <p>设备 3</p>
+
+  <p><input type="button" value="开灯" style="width: 100px; height: 50px" id="openBtn34422" onclick="openLed('32411')"></p>
+
+  <p><input type="button" value="关灯" style="width: 100px; height: 50px" id="closeBtn34422" onclick="closeLed('32411')"></p>
+
+  <p>设备 4</p>
+
+  <p><input type="button" value="开灯" style="width: 100px; height: 50px" id="openBtn34422" onclick="openLed('32426')"></p>
+
+  <p><input type="button" value="关灯" style="width: 100px; height: 50px" id="closeBtn34422" onclick="closeLed('32426')"></p>
+
+  <p>设备 5</p>
+
+  <p><input type="button" value="开灯" style="width: 100px; height: 50px" id="openBtn34422" onclick="openLed('32428')"></p>
+
+  <p><input type="button" value="关灯" style="width: 100px; height: 50px" id="closeBtn34422" onclick="closeLed('32428')"></p>
+
+  <p>设备 6</p>
+
+  <p><input type="button" value="开灯" style="width: 100px; height: 50px" id="openBtn34422" onclick="openLed('32429')"></p>
+
+  <p><input type="button" value="关灯" style="width: 100px; height: 50px" id="closeBtn34422" onclick="closeLed('32429')"></p>
+
+  <p>设备 7</p>
+
+  <p><input type="button" value="开灯" style="width: 100px; height: 50px" id="openBtn34422" onclick="openLed('32430')"></p>
+
+  <p><input type="button" value="关灯" style="width: 100px; height: 50px" id="closeBtn34422" onclick="closeLed('32430')"></p>
+
+  <p>设备 8</p>
+
+  <p><input type="button" value="开灯" style="width: 100px; height: 50px" id="openBtn34422" onclick="openLed('32431')"></p>
+
+  <p><input type="button" value="关灯" style="width: 100px; height: 50px" id="closeBtn34422" onclick="closeLed('32431')"></p>
+
+  <p>设备 9</p>
+
+  <p><input type="button" value="开灯" style="width: 100px; height: 50px" id="openBtn34422" onclick="openLed('32432')"></p>
+
+  <p><input type="button" value="关灯" style="width: 100px; height: 50px" id="closeBtn34422" onclick="closeLed('32432')"></p>
+
+  <p>设备 10</p>
+  
+  <p><input type="button" value="开灯" style="width: 100px; height: 50px" id="openBtn34422" onclick="openLed('32433')"></p>
+
+  <p><input type="button" value="关灯" style="width: 100px; height: 50px" id="closeBtn34422" onclick="closeLed('32433')"></p>
+
+  
+
+
+
+
+
+  <script>
+
+    //开灯
+    function openLed(string){
+      var oReq = new XMLHttpRequest();
+      oReq.open('GET','/openLed?id=' + string);
+      oReq.send(null);
+    };
+
+    //关灯
+    function closeLed(string){
+      var oReq = new XMLHttpRequest();
+      oReq.open('GET','/closeLed?id=' + string);
+      oReq.send(null);
+    }
+
+    //开启所有灯
+    function openAllLed(){
+      var oReq = new XMLHttpRequest();
+      oReq.open('GET','/allON');
+      oReq.send(null);
+    }
+
+    //关闭所有灯
+    function closeAllLed(){
+      var oReq = new XMLHttpRequest();
+      oReq.open('GET','/allOFF');
+      oReq.send(null);
+    }
+
+    //修改设备名称
+
+
+  </script>
+</body>
+
+</html>
