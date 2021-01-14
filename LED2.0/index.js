@@ -40,7 +40,8 @@ server.on('request', function (req, res) {    //res相当于httpservletrequest
   var urls = req.url;
   var arg = url.parse(urls).query;
   var arg = url.parse(urls, true).query;
-  var arg = arg.id;
+  var devKey = arg.id;
+  var devName = arg.devName;
 
   if (urls == '/') {
     res.setHeader('Content-type', 'text/html;charset=utf-8');
@@ -50,21 +51,21 @@ server.on('request', function (req, res) {    //res相当于httpservletrequest
 
     //开灯函数
   } else if (urls.indexOf('/open') != -1) {
-    console.log(openMap.get(arg));
-    request(openMap.get(arg), function (error, response, body) {
+    console.log(openMap.get(devKey));
+    request(openMap.get(devKey), function (error, response, body) {
       if (!error && response.statusCode == 200) {
         res.setHeader('Content-type', 'text/html;charset=utf-8');
-        console.log(arg + ' 开灯');
+        console.log(devKey + ' 开灯');
         res.end(body);
       }
     });
     //关灯函数
   } else if (urls.indexOf('/close') != -1) {
-    console.log(closeMap.get(arg));
-    request(openMap.get(arg), function (error, response, body) {
+    console.log(closeMap.get(devKey));
+    request(openMap.get(devKey), function (error, response, body) {
       if (!error && response.statusCode == 200) {
         res.setHeader('Content-type', 'text/html;charset=utf-8');
-        console.log(arg + ' 关灯');
+        console.log(devKey + ' 关灯');
         res.end(body);
       }
     });
@@ -82,6 +83,20 @@ server.on('request', function (req, res) {    //res相当于httpservletrequest
       console.log(key + ' 关灯')
     }
     res.end();
+  } else if(urls.indexOf('/addDev') != -1){
+    var addDevUrl = 'https://mobi.ydsyb123.com/api/get_wifi_mac.php?us_id=507&dev_name=' + devName + '&sblx=';
+    var code;
+    var obj;
+    request(addDevUrl,{json: true},function(error,response,body){
+      res.setHeader('Content-type', 'text/html;charset=utf-8');
+      obj = eval("("+ body +")");
+      code = obj.rescode;
+      if(code == 'success'){
+        res.end("success")
+      }else{
+        res.end("fail")
+      }
+    })
   }
   //读取首页
   else {

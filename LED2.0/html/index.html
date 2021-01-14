@@ -11,16 +11,20 @@
 
 <body>
 
-  <!--按键-->
+  
   <style>
     div {
       float: left;
     }
   </style>
-  <p><input type="button" value="开启所有" style="width: 100px; height: 50px" id="openAllBtn" onclick="openAllLed()"></p>
 
+  <!--全开-->
+  <p><input type="button" value="开启所有" style="width: 100px; height: 50px" id="openAllBtn" onclick="openAllLed()"></p>
+  <!--全关-->
   <p><input type="button" value="关闭所有" style="width: 100px; height: 50px" id="closeAllBtn" onclick="closeAllLed()"></p>
 
+  <p>添加设备 <input type="text" id="devName" placeholder="请输入设备名称"><span><input type="button" value="确认" id="addDev" onclick="addDev()"></span></p>
+  <!--按键-->
   <div>
     <div>
       <p>设备 1</p>
@@ -101,8 +105,6 @@
 
 
 
-
-
   <script>
 
     //发送开灯请求
@@ -133,7 +135,24 @@
       oReq.send(null);
     }
 
-    //修改设备名称
+    //添加设备
+    function addDev(){
+      $.ajax({
+        url: '/addDev?devName=' + $("#devName").val(),
+        type: "get",
+        data: "json",
+        success: function(data){
+          
+          if(data == 'success'){
+            $("#devName").val("");
+            alert('添加成功');
+            
+          }else{
+            alert('没有找到要添加的设备')
+          }
+        }
+      })
+    }
 
 
   </script>
