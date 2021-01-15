@@ -83,19 +83,25 @@ server.on('request', function (req, res) {    //res相当于httpservletrequest
       console.log(key + ' 关灯')
     }
     res.end();
-  } else if(urls.indexOf('/addDev') != -1){
+  } else if (urls.indexOf('/addDev') != -1) {
     var addDevUrl = 'https://mobi.ydsyb123.com/api/get_wifi_mac.php?us_id=507&dev_name=' + devName + '&sblx=';
     var code;
     var obj;
-    request(addDevUrl,{json: true},function(error,response,body){
+    request(addDevUrl, { json: true }, function (error, response, body) {
       res.setHeader('Content-type', 'text/html;charset=utf-8');
-      obj = eval("("+ body +")");
+      obj = eval("(" + body + ")");
       code = obj.rescode;
-      if(code == 'success'){
+      if (code == 'success') {
         res.end("success")
-      }else{
+      } else {
         res.end("fail")
       }
+    })
+  }else if(urls.indexOf('/showAllDev') != -1){
+    request('https://mobi.ydsyb123.com/api/get_alldev.php?us_id=507&openid=12345678901234567890abcdefg12abc',function(error,response,body){
+      res.setHeader('Content-type', 'text/html;charset=utf-8');
+      //obj = eval("(" + body + ")");
+      res.end(body);
     })
   }
   //读取首页

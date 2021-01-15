@@ -11,22 +11,22 @@
 
 <body>
 
-  
-  <style>
-    div {
-      float: left;
-    }
-  </style>
+
+
 
   <!--全开-->
   <p><input type="button" value="开启所有" style="width: 100px; height: 50px" id="openAllBtn" onclick="openAllLed()"></p>
   <!--全关-->
   <p><input type="button" value="关闭所有" style="width: 100px; height: 50px" id="closeAllBtn" onclick="closeAllLed()"></p>
 
-  <p>添加设备 <input type="text" id="devName" placeholder="请输入设备名称"><span><input type="button" value="确认" id="addDev" onclick="addDev()"></span></p>
+  <style>
+    div {
+      float: left;
+    }
+  </style>
   <!--按键-->
   <div>
-    <div>
+    <div id="34425">
       <p>设备 1</p>
       <p><input type="button" value="开灯" style="width: 100px; height: 50px" id="openBtn34425"
           onclick="openLed('32425')"></p>
@@ -101,11 +101,40 @@
     </div>
   </div>
 
+  <!--添加设备-->
+  <div style="margin-top: 200px;margin-left: -1000px;  float: left;">添加设备 <input type="text" id="devName"
+      placeholder="请输入设备名称"><span><input type="button" value="确认" id="addDev" onclick="addDev()"></span></div>
 
-
-
+  <!--显示所有设备-->
+  <div style="margin-top: 250px; margin-left: -1000px; float: left;" class="ledName">
+      已绑定设备:
+      <ul>
+        <li v-for="device in dev.devlist">dev_id:{{device.dev_id}} --- dev_name:{{device.dev_name}} <span><input type="button" value="修改名称" id=device.dev_id onclick="updateName()"></span></li>
+      </ul>
+  </div>
 
   <script>
+
+    //显示所有已绑定的设备
+    window.onload = function(){
+      $.ajax({
+        url:"/showAllDev",
+        type:"get",
+        data:"json",
+        success:function(data){
+          var dev = JSON.parse(data);
+          console.log(dev);
+          var showVue = new Vue({
+            el:'.ledName',
+            data:{
+              dev
+            }
+          })
+        }
+      })
+    }
+
+    //修改设备名称
 
     //发送开灯请求
     function openLed(string) {
@@ -136,18 +165,18 @@
     }
 
     //添加设备
-    function addDev(){
+    function addDev() {
       $.ajax({
         url: '/addDev?devName=' + $("#devName").val(),
         type: "get",
         data: "json",
-        success: function(data){
-          
-          if(data == 'success'){
+        success: function (data) {
+
+          if (data == 'success') {
             $("#devName").val("");
             alert('添加成功');
-            
-          }else{
+
+          } else {
             alert('没有找到要添加的设备')
           }
         }
