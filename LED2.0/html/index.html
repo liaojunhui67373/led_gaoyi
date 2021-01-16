@@ -23,68 +23,51 @@
         onclick="addDev()"></span></div><br>
 
 
-  <!--所有设备-->
-  <div class="ledName">
-
-    已绑定的设备:<br><br>
-
-    <input v-for="item in dev.devlist" type="button" :value="item.dev_name" @click="switchLed(item.dev_id)"
-      style="width: 100px; height: 50px"></input>
-  </div><br><br>
-
 
   <!--设备详情-->
   <div id="detail">
-    设备详情:
-    <ul>
-      <li v-for="item in dev.devlist">
-        设备ID：{{item.dev_id}} &nbsp &nbsp &nbsp &nbsp 设备名称: {{item.dev_name}} <span><input type="button" value="修改"
-            @click="updateName(item.dev_id)"></span>
 
-      </li>
-    </ul>
+    <h3>已绑定设备:</h3>
+
+    <li v-for="item in dev.devlist">
+      <br>
+
+      <!--设备ID：{{item.dev_id}} &nbsp &nbsp &nbsp &nbsp--> 设备名称: {{item.dev_name}}
+
+
+
+      <span style="position: absolute; left: 225px;"><input type="button" value="开灯" @click="openLed(item.dev_id)"
+          style="height: 30px; width: 70px;">
+      </span>
+
+      <span style="position: absolute; left: 300px;"><input type="button" value="关灯" @click="closeLed(item.dev_id)"
+          style="height: 30px; width: 70px;">
+      </span>
+
+      <span style="position: absolute; left: 375px;"><input type="button" value="修改" @click="updateName(item.dev_id)"
+          style="height: 30px; width: 70px;">
+      </span>
+
+    </li>
+
   </div>
 
   <!--二维码-->
   <div>
-    <img src="../static/image/0d1102636fdf36cdff2f9fefbfc5393.jpg"
-      style="margin-top: -250px; margin-left: 800px; float: left;">
+    <img src="../static/image/0d1102636fdf36cdff2f9fefbfc5393.jpg" style="position: relative; bottom: -300px;">
   </div>
 
   <script>
 
-
     //开关灯函数
     window.onload = function () {
-      let flag = true;
       $.ajax({
         url: "/showAllDev",
         type: "get",
         data: "json",
         success: function (data) {
           let dev = JSON.parse(data);
-          let showVue = new Vue({
-            el: '.ledName',
-            data: {
-              dev
-            },
-            methods: {
-              switchLed(string) {
-                if (flag) {
-                  let oReq = new XMLHttpRequest();
-                  oReq.open('GET', '/openLed?id=' + string);
-                  oReq.send(null);
-                  flag = false;
-                } else {
-                  let oReq = new XMLHttpRequest();
-                  oReq.open('GET', '/closeLed?id=' + string);
-                  oReq.send(null);
-                  flag = true;
-                }
 
-              }
-            }
-          });
 
           //设备详情
           let detailVue = new Vue({
@@ -95,22 +78,42 @@
             methods: {
               updateName(string) {
                 let name = prompt();
-                $.ajax({
+                if(name == null){
+                  return
+                }else {
+                  $.ajax({
                   url: '/updateName?id=' + string + '&name=' + name,
-                  async: false,
                   type: "get",
                   data: "json",
                   success: function (data) {
                     if (data == 'success') {
-                      alert('修改成功');
+                      alert('修改成功')
                     } else {
                       alert('修改失败')
                     }
                   }
                 })
-              }
+                }
+                
+              },
+
+              //开灯
+              openLed(string) {
+                let oReq = new XMLHttpRequest();
+                oReq.open('GET', '/openLed?id=' + string);
+                oReq.send(null);
+              },
+
+              //关灯
+              closeLed(string) {
+                let oReq = new XMLHttpRequest();
+                oReq.open('GET', '/closeLed?id=' + string);
+                oReq.send(null);
+              },
+
             }
-          });
+
+          })
         }
       })
     }
