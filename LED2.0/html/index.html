@@ -11,159 +11,120 @@
 
 <body>
 
-
-
-
   <!--全开-->
   <p><input type="button" value="开启所有" style="width: 100px; height: 50px" id="openAllBtn" onclick="openAllLed()"></p>
   <!--全关-->
   <p><input type="button" value="关闭所有" style="width: 100px; height: 50px" id="closeAllBtn" onclick="closeAllLed()"></p>
+  <br>
 
-  <style>
-    div {
-      float: left;
-    }
-  </style>
-  <!--按键-->
-  <div>
-    <div id="34425">
-      <p>设备 1</p>
-      <p><input type="button" value="开灯" style="width: 100px; height: 50px" id="openBtn34425"
-          onclick="openLed('32425')"></p>
-      <p><input type="button" value="关灯" style="width: 100px; height: 50px" id="closeBtn34425"
-          onclick="closeLed('32425')"></p>
-    </div>
-    <div>
-      <p>设备 2</p>
-      <p><input type="button" value="开灯" style="width: 100px; height: 50px" id="openBtn34422"
-          onclick="openLed('32422')"></p>
-      <p><input type="button" value="关灯" style="width: 100px; height: 50px" id="closeBtn34422"
-          onclick="closeLed('32422')"></p>
-    </div>
-    <div>
-      <p>设备 3</p>
-      <p><input type="button" value="开灯" style="width: 100px; height: 50px" id="openBtn32411"
-          onclick="openLed('32411')"></p>
-      <p><input type="button" value="关灯" style="width: 100px; height: 50px" id="closeBtn32411"
-          onclick="closeLed('32411')"></p>
-    </div>
-    <div>
-      <p>设备 4</p>
-      <p><input type="button" value="开灯" style="width: 100px; height: 50px" id="openBtn32426"
-          onclick="openLed('32426')"></p>
-      <p><input type="button" value="关灯" style="width: 100px; height: 50px" id="closeBtn32426"
-          onclick="closeLed('32426')"></p>
-    </div>
-    <div>
-      <p>设备 5</p>
-      <p><input type="button" value="开灯" style="width: 100px; height: 50px" id="openBtn32428"
-          onclick="openLed('32428')"></p>
-      <p><input type="button" value="关灯" style="width: 100px; height: 50px" id="closeBtn32428"
-          onclick="closeLed('32428')"></p>
-    </div>
-    <div>
-      <p>设备 6</p>
-      <p><input type="button" value="开灯" style="width: 100px; height: 50px" id="openBtn32429"
-          onclick="openLed('32429')">
-      </p>
-      <p><input type="button" value="关灯" style="width: 100px; height: 50px" id="closeBtn32429"
-          onclick="closeLed('32429')"></p>
-    </div>
-    <div>
-      <p>设备 7</p>
-      <p><input type="button" value="开灯" style="width: 100px; height: 50px" id="openBtn32430"
-          onclick="openLed('32430')"></p>
-      <p><input type="button" value="关灯" style="width: 100px; height: 50px" id="closeBtn32430"
-          onclick="closeLed('32430')"></p>
-    </div>
-    <div>
-      <p>设备 8</p>
-      <p><input type="button" value="开灯" style="width: 100px; height: 50px" id="openBtn32431"
-          onclick="openLed('32431')">
-      </p>
-      <p><input type="button" value="关灯" style="width: 100px; height: 50px" id="closeBtn32431"
-          onclick="closeLed('32431')"></p>
-    </div>
-    <div>
-      <p>设备 9</p>
-      <p><input type="button" value="开灯" style="width: 100px; height: 50px" id="openBtn32432"
-          onclick="openLed('32432')"></p>
-      <p><input type="button" value="关灯" style="width: 100px; height: 50px" id="closeBtn32432"
-          onclick="closeLed('32432')"></p>
-    </div>
-    <div>
-      <p>设备 10</p>
-
-      <p><input type="button" value="开灯" style="width: 100px; height: 50px" id="openBtn32433"
-          onclick="openLed('32433')"></p>
-      <p><input type="button" value="关灯" style="width: 100px; height: 50px" id="closeBtn32433"
-          onclick="closeLed('32433')"></p>
-    </div>
-  </div>
 
   <!--添加设备-->
-  <div style="margin-top: 200px;margin-left: -1000px;  float: left;">添加设备 <input type="text" id="devName"
-      placeholder="请输入设备名称"><span><input type="button" value="确认" id="addDev" onclick="addDev()"></span></div>
+  <div>添加设备 <input type="text" id="devName" placeholder="请输入设备名称"><span><input type="button" value="确认" id="addDev"
+        onclick="addDev()"></span></div><br>
 
-  <!--显示所有设备-->
-  <div style="margin-top: 250px; margin-left: -1000px; float: left;" class="ledName">
-      已绑定设备:
-      <ul>
-        <li v-for="device in dev.devlist">dev_id:{{device.dev_id}} --- dev_name:{{device.dev_name}} <span><input type="button" value="修改名称" id=device.dev_id onclick="updateName()"></span></li>
-      </ul>
+
+  <!--所有设备-->
+  <div class="ledName">
+
+    已绑定的设备:<br><br>
+
+    <input v-for="item in dev.devlist" type="button" :value="item.dev_name" @click="switchLed(item.dev_id)"
+      style="width: 100px; height: 50px"></input>
+  </div><br><br>
+
+
+  <!--设备详情-->
+  <div id="detail">
+    设备详情:
+    <ul>
+      <li v-for="item in dev.devlist">
+        设备ID：{{item.dev_id}} &nbsp &nbsp &nbsp &nbsp 设备名称: {{item.dev_name}} <span><input type="button" value="修改"
+            @click="updateName(item.dev_id)"></span>
+
+      </li>
+    </ul>
   </div>
 
+  <!--二维码-->
   <div>
-    <img src="../static/image/0d1102636fdf36cdff2f9fefbfc5393.jpg" style="margin-top: 270px; margin-left: -300px; float: left;">
+    <img src="../static/image/0d1102636fdf36cdff2f9fefbfc5393.jpg"
+      style="margin-top: -250px; margin-left: 800px; float: left;">
   </div>
 
   <script>
 
-    //显示所有已绑定的设备
-    window.onload = function(){
+
+    //开关灯函数
+    window.onload = function () {
+      let flag = true;
       $.ajax({
-        url:"/showAllDev",
-        type:"get",
-        data:"json",
-        success:function(data){
-          var dev = JSON.parse(data);
-          console.log(dev);
-          var showVue = new Vue({
-            el:'.ledName',
-            data:{
+        url: "/showAllDev",
+        type: "get",
+        data: "json",
+        success: function (data) {
+          let dev = JSON.parse(data);
+          let showVue = new Vue({
+            el: '.ledName',
+            data: {
               dev
+            },
+            methods: {
+              switchLed(string) {
+                if (flag) {
+                  let oReq = new XMLHttpRequest();
+                  oReq.open('GET', '/openLed?id=' + string);
+                  oReq.send(null);
+                  flag = false;
+                } else {
+                  let oReq = new XMLHttpRequest();
+                  oReq.open('GET', '/closeLed?id=' + string);
+                  oReq.send(null);
+                  flag = true;
+                }
+
+              }
             }
-          })
+          });
+
+          //设备详情
+          let detailVue = new Vue({
+            el: '#detail',
+            data: {
+              dev
+            },
+            methods: {
+              updateName(string) {
+                let name = prompt();
+                $.ajax({
+                  url: '/updateName?id=' + string + '&name=' + name,
+                  async: false,
+                  type: "get",
+                  data: "json",
+                  success: function (data) {
+                    if (data == 'success') {
+                      alert('修改成功');
+                    } else {
+                      alert('修改失败')
+                    }
+                  }
+                })
+              }
+            }
+          });
         }
       })
     }
 
-    //修改设备名称
-
-    //发送开灯请求
-    function openLed(string) {
-      var oReq = new XMLHttpRequest();
-      oReq.open('GET', '/openLed?id=' + string);
-      oReq.send(null);
-    };
-
-    //发送关灯请求
-    function closeLed(string) {
-      var oReq = new XMLHttpRequest();
-      oReq.open('GET', '/closeLed?id=' + string);
-      oReq.send(null);
-    }
-
     //开启所有灯
     function openAllLed() {
-      var oReq = new XMLHttpRequest();
+      let oReq = new XMLHttpRequest();
       oReq.open('GET', '/allON');
       oReq.send(null);
     }
 
     //关闭所有灯
     function closeAllLed() {
-      var oReq = new XMLHttpRequest();
+      let oReq = new XMLHttpRequest();
       oReq.open('GET', '/allOFF');
       oReq.send(null);
     }
@@ -179,14 +140,13 @@
           if (data == 'success') {
             $("#devName").val("");
             alert('添加成功');
-
           } else {
-            alert('没有找到要添加的设备')
+            alert('没有找到要添加的设备');
+            $("#devName").val("");
           }
         }
       })
     }
-
 
   </script>
 </body>
