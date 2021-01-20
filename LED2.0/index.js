@@ -131,8 +131,6 @@ server.on('request', function (req, res) {    //res相当于httpservletrequest
 
       updateObj = eval("(" + body + ")");
 
-      console.log(updateObj);
-
       updateCode = updateObj.recode
 
       if (updateCode == 'success') {
@@ -151,6 +149,6 @@ server.on('request', function (req, res) {    //res相当于httpservletrequest
 
 });
 
-server.listen(8082, function () {
-  console.log('服务器已启动:8082')
+server.listen(8083, function () {
+  console.log('服务器已启动:8083')
 });

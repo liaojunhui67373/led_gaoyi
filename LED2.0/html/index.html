@@ -19,22 +19,17 @@
 
 
   <!--添加设备-->
-  <div>添加设备 <input type="text" id="devName" placeholder="请输入设备名称"><span><input type="button" value="确认" id="addDev"
-        onclick="addDev()"></span></div><br>
-
-
+  <div>添加设备 <input type="text" id="devName" placeholder="请输入设备名称">
+    <span><input type="button" value="确认" id="addDev" onclick="addDev()">
+    </span>
+  </div><br>
 
   <!--设备详情-->
+  <h3>已绑定设备:</h3>
   <div id="detail">
-
-    <h3>已绑定设备:</h3>
-
-    <li v-for="item in dev.devlist">
-      <br>
+    <li v-for="item in dev.devlist"><br>
 
       <!--设备ID：{{item.dev_id}} &nbsp &nbsp &nbsp &nbsp--> 设备名称: {{item.dev_name}}
-
-
 
       <span style="position: absolute; left: 225px;"><input type="button" value="开灯" @click="openLed(item.dev_id)"
           style="height: 30px; width: 70px;">
@@ -47,17 +42,17 @@
       <span style="position: absolute; left: 375px;"><input type="button" value="修改" @click="updateName(item.dev_id)"
           style="height: 30px; width: 70px;">
       </span>
-
     </li>
-
   </div>
-
   <!--二维码-->
   <div>
     <img src="../static/image/0d1102636fdf36cdff2f9fefbfc5393.jpg" style="position: relative; bottom: -300px;">
   </div>
 
   <script>
+
+
+
 
     //开关灯函数
     window.onload = function () {
@@ -68,7 +63,6 @@
         success: function (data) {
           let dev = JSON.parse(data);
 
-
           //设备详情
           let detailVue = new Vue({
             el: '#detail',
@@ -78,41 +72,30 @@
             methods: {
               updateName(string) {
                 let name = prompt();
-                if(name == null){
+                if (name == null) {
                   return
-                }else {
-                  $.ajax({
-                  url: '/updateName?id=' + string + '&name=' + name,
-                  type: "get",
-                  data: "json",
-                  success: function (data) {
-                    if (data == 'success') {
-                      alert('修改成功')
+                } else {
+                  axios.get('/updateName?id=' + string + '&name=' + name).then(function (response) {
+                    if (response.data == 'success') {
+                      alert('修改成功');
+                      window.location.reload()
                     } else {
+                      console.log(response)
                       alert('修改失败')
                     }
-                  }
-                })
+                  })
                 }
-                
               },
-
               //开灯
               openLed(string) {
-                let oReq = new XMLHttpRequest();
-                oReq.open('GET', '/openLed?id=' + string);
-                oReq.send(null);
+                axios.get('/openLed?id=' + string);
               },
 
               //关灯
               closeLed(string) {
-                let oReq = new XMLHttpRequest();
-                oReq.open('GET', '/closeLed?id=' + string);
-                oReq.send(null);
+                axios.get('/closeLed?id=' + string)
               },
-
             }
-
           })
         }
       })
@@ -120,38 +103,28 @@
 
     //开启所有灯
     function openAllLed() {
-      let oReq = new XMLHttpRequest();
-      oReq.open('GET', '/allON');
-      oReq.send(null);
+      axios.get('/allON')
     }
 
     //关闭所有灯
     function closeAllLed() {
-      let oReq = new XMLHttpRequest();
-      oReq.open('GET', '/allOFF');
-      oReq.send(null);
+      axios.get('/allOFF')
     }
 
-    //添加设备
     function addDev() {
-      $.ajax({
-        url: '/addDev?devName=' + $("#devName").val(),
-        type: "get",
-        data: "json",
-        success: function (data) {
-
-          if (data == 'success') {
-            $("#devName").val("");
-            alert('添加成功');
-          } else {
-            alert('没有找到要添加的设备');
-            $("#devName").val("");
-          }
+      axios.get('/addDev?devName=' + $("#devName").val()).then(function (response) {
+        if (response.data == 'success') {
+          $("#devName").val("");
+          alert('添加成功');
+        } else {
+          console.log(response);
+          alert('没有找到要添加的设备');
+          $("#devName").val("");
         }
       })
     }
-
   </script>
 </body>
+
 
 </html>
